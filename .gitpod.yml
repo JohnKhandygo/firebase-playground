@@ -1,3 +1,6 @@
+vscode:
+  extensions:
+    - Dart-Code.flutter
 tasks:
   - name: opentofu
     before: |
@@ -27,3 +30,14 @@ tasks:
       ## wait for the previous task to finish before attempting to install
       gp sync-await opentofu
       sudo apt-get update && sudo apt-get install google-cloud-cli -y
+      gp sync-done gcp-cli
+  - name: flutter-web-sdk
+    before: |
+      gp sync-await gcp-cli
+      # see https://docs.flutter.dev/get-started/install/linux/web
+      sudo apt-get install -y curl git unzip xz-utils zip libglu1-mesa
+      curl "https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.22.3-stable.tar.xz" -o "/tmp/flutter_linux_3.22.3-stable.tar.xz"
+      tar -xf /tmp/flutter_linux_3.22.3-stable.tar.xz -C /workspace/
+      export PATH="/workspace/flutter/bin:$PATH"
+      # upgrade to the latest version
+      fluuter upgrade
