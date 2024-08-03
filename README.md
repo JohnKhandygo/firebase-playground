@@ -1,5 +1,7 @@
 # Firebase PLAYground
 
+## Cloud environment
+
 To begin with terraform scripts in this project start with authenticating in GCP
 
 ```
@@ -25,3 +27,22 @@ If running on a fresh project, there is no bucket for remote backend yet. In thi
 3. Then run `tf -chdir=infra init && tf -chdir=infra apply`
 4. Uncomment backend configuration and update the bucket name
 5. Run `tf -chdir=infra init -migrate-state`
+
+## Web app
+
+We will use `flutter` to create an app to explore Firebase.
+
+> To create an app from scratch run:
+> ```
+> flutter create --platforms=web flutter-app
+> ```
+
+To tun the app execute the following command _from the app directory_
+
+```
+PORT=12345 flutter run \
+  -d chrome \
+  --web-port $PORT \
+  --web-launch-url $(gp url $PORT) \
+  --release
+```
