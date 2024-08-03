@@ -40,4 +40,4 @@ tasks:
       tar -xf /tmp/flutter_linux_3.22.3-stable.tar.xz -C /workspace/
       export PATH="/workspace/flutter/bin:$PATH"
       # upgrade to the latest version
-      fluuter upgrade
+      flutter upgrade
