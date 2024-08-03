@@ -34,7 +34,7 @@ We will use `flutter` to create an app to explore Firebase.
 
 > To create an app from scratch run:
 > ```
-> flutter create --platforms=web flutter-app
+> flutter create --platforms=web flutter_app
 > ```
 
 To tun the app execute the following command _from the app directory_
