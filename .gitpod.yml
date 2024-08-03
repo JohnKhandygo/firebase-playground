@@ -1,3 +1,4 @@
+image: gitpod/workspace-full-vnc
 vscode:
   extensions:
     - Dart-Code.flutter
@@ -31,7 +32,7 @@ tasks:
       gp sync-await opentofu
       sudo apt-get update && sudo apt-get install google-cloud-cli -y
       gp sync-done gcp-cli
-  - name: flutter-web-sdk
+  - name: flutter-sdk
     before: |
       gp sync-await gcp-cli
       # see https://docs.flutter.dev/get-started/install/linux/web
