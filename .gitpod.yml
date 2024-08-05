@@ -8,10 +8,10 @@ tasks:
       brew install opentofu
   - name: gcp-cli
     before: |
+      gp sync-await flutter-sdk
       bin/install_gcp-cli.sh
-      gp sync-done gcp-cli
   - name: flutter-sdk
     before: |
-      gp sync-await gcp-cli
       bin/install_flutter-sdk.sh /workspace
       export PATH="/workspace/flutter/bin:$PATH"
+      gp sync-done flutter-sdk
