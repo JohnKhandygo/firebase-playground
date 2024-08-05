@@ -2,12 +2,15 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-Future<void> main() async {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  
+
   runApp(const MyApp());
 }
 
@@ -63,6 +66,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final _formKey = GlobalKey<FormState>();
+  var _email = '';
+  var _password = '';
 
   @override
   Widget build(BuildContext context) {
@@ -111,10 +116,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 label: Text('First Name*'),
                                 helperText: 'Your name',
                               ),
-                              validator: (value) =>
-                                  value == null || value.isEmpty
-                                      ? 'Enter your first name'
-                                      : null,
+                              validator: (value) => value == null || value.isEmpty ? 'Enter your first name' : null,
                             ),
                           ),
                           const SizedBox(
@@ -127,10 +129,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 label: Text('Last Name*'),
                                 helperText: 'Your surname',
                               ),
-                              validator: (value) =>
-                                  value == null || value.isEmpty
-                                      ? 'Enter your last name'
-                                      : null,
+                              validator: (value) => value == null || value.isEmpty ? 'Enter your last name' : null,
                             ),
                           ),
                         ],
@@ -144,9 +143,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           helperText: 'Your email address',
                         ),
                         validator: (value) =>
-                            value != null && EmailValidator.validate(value)
-                                ? null
-                                : 'Enter a valid email address',
+                            value != null && EmailValidator.validate(value) ? null : 'Enter a valid email address',
+                        onSaved: (value) => _email = value!,
                       ),
                       const SizedBox(
                         height: 20,
@@ -159,16 +157,23 @@ class _MyHomePageState extends State<MyHomePage> {
                         obscureText: true,
                         enableSuggestions: false,
                         autocorrect: false,
-                        validator: (value) => value == null || value.isEmpty
-                            ? 'Enter a password'
-                            : null,
+                        validator: (value) => value == null || value.isEmpty ? 'Enter a password' : null,
+                        onSaved: (value) => _password = value!,
                       ),
                       const SizedBox(
                         height: 20,
                       ),
                       FilledButton.tonal(
-                        onPressed: () {
-                          _formKey.currentState!.validate();
+                        onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
+                            try {
+                              var credentials = await FirebaseAuth.instance
+                                  .createUserWithEmailAndPassword(email: _email, password: _password);
+                              print(credentials.user);
+                            } catch (e) {
+                              print(e.toString());
+                            }
+                          }
                         },
                         child: Text(
                           'Sign up',
