@@ -47,3 +47,5 @@ flutter run \
   --web-launch-url $(gp url $FLUTTER_APP_PORT) \
   --release
 ```
+
+To configure Firebase for the app follow [Add Firebase to your Flutter app](https://firebase.google.com/docs/flutter/setup?platform=ios).
