@@ -66,8 +66,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final _formKey = GlobalKey<FormState>();
-  var _email = '';
-  var _password = '';
+  String _email = '';
+  String _password = '';
 
   @override
   Widget build(BuildContext context) {
@@ -166,12 +166,12 @@ class _MyHomePageState extends State<MyHomePage> {
                       FilledButton.tonal(
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
+                            _formKey.currentState!.save();
                             try {
                               var credentials = await FirebaseAuth.instance
                                   .createUserWithEmailAndPassword(email: _email, password: _password);
-                              print(credentials.user);
                             } catch (e) {
-                              print(e.toString());
+                              print("Cannot register a user: $e");
                             }
                           }
                         },
