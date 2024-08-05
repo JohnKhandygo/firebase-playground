@@ -68,6 +68,8 @@ class _MyHomePageState extends State<MyHomePage> {
   final _formKey = GlobalKey<FormState>();
   String _email = '';
   String _password = '';
+  String _firstName = '';
+  String _lastName = '';
 
   @override
   Widget build(BuildContext context) {
@@ -117,6 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 helperText: 'Your name',
                               ),
                               validator: (value) => value == null || value.isEmpty ? 'Enter your first name' : null,
+                              onSaved: (value) => _firstName = value!,
                             ),
                           ),
                           const SizedBox(
@@ -130,6 +133,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 helperText: 'Your surname',
                               ),
                               validator: (value) => value == null || value.isEmpty ? 'Enter your last name' : null,
+                              onSaved: (value) => _lastName = value!,
                             ),
                           ),
                         ],
@@ -170,6 +174,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             try {
                               var credentials = await FirebaseAuth.instance
                                   .createUserWithEmailAndPassword(email: _email, password: _password);
+                              await credentials.user!.updateDisplayName("$_firstName $_lastName");
                             } catch (e) {
                               print("Cannot register a user: $e");
                             }
