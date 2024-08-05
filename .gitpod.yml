@@ -8,20 +8,10 @@ tasks:
       brew install opentofu
   - name: gcp-cli
     before: |
-      # see https://cloud.google.com/sdk/docs/install-sdk
-      sudo apt-get install apt-transport-https ca-certificates gnupg curl -y
-      curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg
-      echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
-      ## wait for the previous task to finish before attempting to install
-      sudo apt-get update && sudo apt-get install google-cloud-cli -y
+      bin/install_gcp-cli.sh
       gp sync-done gcp-cli
   - name: flutter-sdk
     before: |
       gp sync-await gcp-cli
-      # see https://docs.flutter.dev/get-started/install/linux/web
-      sudo apt-get install -y curl git unzip xz-utils zip libglu1-mesa
-      curl "https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.22.3-stable.tar.xz" -o "/tmp/flutter_linux_3.22.3-stable.tar.xz"
-      tar -xf /tmp/flutter_linux_3.22.3-stable.tar.xz -C /workspace/
+      bin/install_flutter-sdk.sh /workspace
       export PATH="/workspace/flutter/bin:$PATH"
-      # upgrade to the latest version
-      flutter upgrade
