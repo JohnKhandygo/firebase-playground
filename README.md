@@ -40,9 +40,10 @@ We will use `flutter` to create an app to explore Firebase.
 To tun the app execute the following command _from the app directory_
 
 ```
-PORT=12345 flutter run \
+export FLUTTER_APP_PORT=12345
+flutter run \
   -d chrome \
-  --web-port $PORT \
-  --web-launch-url $(gp url $PORT) \
+  --web-port $FLUTTER_APP_PORT \
+  --web-launch-url $(gp url $FLUTTER_APP_PORT) \
   --release
 ```
