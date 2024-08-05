@@ -56,7 +56,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final _formKey = GlobalKey();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -88,60 +88,89 @@ class _MyHomePageState extends State<MyHomePage> {
             // wireframe for each widget.
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(
-                'Sign up',
-                style: Theme.of(context).textTheme.headlineLarge
+              Text('Sign up', style: Theme.of(context).textTheme.headlineLarge),
+              const SizedBox(
+                height: 20,
               ),
-              const SizedBox(height: 20,),
               Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 5,
-                          child: TextFormField(
-                            decoration: const InputDecoration(
-                              label: Text('First Name*'),
-                              helperText: 'Your name'
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 5,
+                            child: TextFormField(
+                              decoration: const InputDecoration(
+                                label: Text('First Name*'),
+                                helperText: 'Your name',
+                              ),
+                              validator: (value) =>
+                                  value == null || value.isEmpty
+                                      ? 'Enter your first name'
+                                      : null,
                             ),
                           ),
-                        ),
-                        const SizedBox(width: 20,),
-                        Expanded(
-                          flex: 5,
-                          child: TextFormField(
-                            decoration: const InputDecoration(
-                              label: Text('Last Name*'),
-                              helperText: 'Your surname'
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          Expanded(
+                            flex: 5,
+                            child: TextFormField(
+                              decoration: const InputDecoration(
+                                label: Text('Last Name*'),
+                                helperText: 'Your surname',
+                              ),
+                              validator: (value) =>
+                                  value == null || value.isEmpty
+                                      ? 'Enter your last name'
+                                      : null,
                             ),
                           ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      TextFormField(
+                        decoration: const InputDecoration(
+                          label: Text('Email*'),
+                          helperText: 'Your email address',
                         ),
-                      ],
-                    ),
-                    const SizedBox(height: 20,),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        label: Text('Email*'),
-                        helperText: 'Your email address'
+                        validator: (value) =>
+                            value != null && EmailValidator.validate(value)
+                                ? null
+                                : 'Enter a valid email address',
                       ),
-                      validator: (value) => value != null && EmailValidator.validate(value) ? null : 'Enter a valid email address',
-                    ),
-                    const SizedBox(height: 20,),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        label: Text('Password*'),
-                        helperText: 'Come up with a secret phrase'
+                      const SizedBox(
+                        height: 20,
                       ),
-                      obscureText: true,
-                      enableSuggestions: false,
-                      autocorrect: false,
-                    ),
-                    const SizedBox(height: 20,),
-                  ],
-                )
-              )
+                      TextFormField(
+                        decoration: const InputDecoration(
+                          label: Text('Password*'),
+                          helperText: 'Come up with a secret phrase',
+                        ),
+                        obscureText: true,
+                        enableSuggestions: false,
+                        autocorrect: false,
+                        validator: (value) => value == null || value.isEmpty
+                            ? 'Enter a password'
+                            : null,
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      FilledButton.tonal(
+                        onPressed: () {
+                          _formKey.currentState!.validate();
+                        },
+                        child: Text(
+                          'Sign up',
+                          style: Theme.of(context).textTheme.labelLarge,
+                        ),
+                      )
+                    ],
+                  ))
             ],
           ),
         ),
