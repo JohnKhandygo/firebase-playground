@@ -14,12 +14,10 @@ tasks:
     before: |
       bin/install_flutter-sdk.sh /workspace
       export PATH="/workspace/flutter/bin:$PATH"
+      dart pub global activate flutterfire_cli
+      export PATH="$PATH":"$HOME/.pub-cache/bin"
       gp sync-done flutter-sdk
   - name: firebase-cli
     before: |
       npm install -g firebase-tools
-  - name: flutterfire-cli
-    before: |
-      gp sync-await flutter-sdk
-      dart pub global activate flutterfire_cli
-      export PATH="$PATH":"$HOME/.pub-cache/bin"
+      
