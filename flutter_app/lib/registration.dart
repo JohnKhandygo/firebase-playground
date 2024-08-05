@@ -91,6 +91,7 @@ class _RegistrationState extends State<RegistrationForm> {
                   } catch (e) {
                     print("Cannot register a user: $e");
                   }
+                  _formKey.currentState!.reset();
                 }
               },
               child: Text(
