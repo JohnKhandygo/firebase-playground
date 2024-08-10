@@ -1,7 +1,6 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/screens/home.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});
@@ -100,15 +99,10 @@ class _RegistrationState extends State<RegistrationScreen> {
                               var credentials = await FirebaseAuth.instance
                                   .createUserWithEmailAndPassword(email: _email, password: _password);
                               await credentials.user!.updateDisplayName("$_firstName $_lastName");
-                              var currentUser = (await FirebaseAuth.instance.currentUser)!;
+                              await credentials.user!.reload();
                               _formKey.currentState!.reset();
                               if (context.mounted) {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => HomeScreen(currentUser),
-                                  ),
-                                );
+                                Navigator.pop(context);
                               }
                             } catch (e) {
                               print("Cannot register a user: $e");

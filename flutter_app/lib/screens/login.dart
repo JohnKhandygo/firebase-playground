@@ -1,7 +1,6 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/screens/home.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -47,7 +46,7 @@ class _LoginScreen extends State<LoginScreen> {
                       TextFormField(
                         decoration: const InputDecoration(
                           label: Text('Password*'),
-                          helperText: 'Come up with a secret phrase',
+                          helperText: 'Your password goes here',
                         ),
                         obscureText: true,
                         enableSuggestions: false,
@@ -62,21 +61,26 @@ class _LoginScreen extends State<LoginScreen> {
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
                             _formKey.currentState!.save();
-                            UserCredential? credentials;
                             try {
-                              credentials = await FirebaseAuth.instance
+                              await FirebaseAuth.instance
                                   .signInWithEmailAndPassword(email: _email, password: _password);
                               _formKey.currentState!.reset();
                               if (context.mounted) {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => HomeScreen(credentials!.user!),
+                                Navigator.pop(context);
+                              }
+                            } catch (e) {
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    showCloseIcon: true,
+                                    backgroundColor: Theme.of(context).snackBarTheme.backgroundColor,
+                                    content: Text(
+                                      'Cannot login, please try again.',
+                                      style: Theme.of(context).snackBarTheme.contentTextStyle,
+                                    ),
                                   ),
                                 );
                               }
-                            } catch (e) {
-                              print("Cannot login: $e");
                             }
                           }
                         },

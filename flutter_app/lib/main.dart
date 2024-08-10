@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_app/screens/login.dart';
-import 'package:flutter_app/screens/registration.dart';
+import 'package:flutter_app/screens/home.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -41,65 +40,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const LandingScreen(),
-    );
-  }
-}
-
-class LandingScreen extends StatelessWidget {
-  const LandingScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Card(
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Welcome, stranger!',
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    FilledButton.tonal(
-                        onPressed: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => RegistrationScreen(),
-                            )),
-                        child: Text(
-                          'Sign up',
-                          style: Theme.of(context).textTheme.labelLarge,
-                        )),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    FilledButton.tonal(
-                        onPressed: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => LoginScreen(),
-                            )),
-                        child: Text(
-                          'Sign in',
-                          style: Theme.of(context).textTheme.labelLarge,
-                        )),
-                  ],
-                )
-              ],
-            ),
-          ),
-        ),
-      ),
+      home: const HomeScreen(),
     );
   }
 }
