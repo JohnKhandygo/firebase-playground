@@ -1,17 +1,19 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/home.dart';
+import 'package:flutter_app/screens/home.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class RegistrationScreen extends StatefulWidget {
+  const RegistrationScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreen();
+  State<RegistrationScreen> createState() => _RegistrationState();
 }
 
-class _LoginScreen extends State<LoginScreen> {
+class _RegistrationState extends State<RegistrationScreen> {
   final _formKey = GlobalKey<FormState>();
+  String _firstName = '';
+  String _lastName = '';
   String _email = '';
   String _password = '';
 
@@ -24,7 +26,7 @@ class _LoginScreen extends State<LoginScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Sign in', style: Theme.of(context).textTheme.headlineLarge),
+              Text('Sign up', style: Theme.of(context).textTheme.headlineLarge),
               const SizedBox(
                 height: 20,
               ),
@@ -32,6 +34,38 @@ class _LoginScreen extends State<LoginScreen> {
                   key: _formKey,
                   child: Column(
                     children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 5,
+                            child: TextFormField(
+                              decoration: const InputDecoration(
+                                label: Text('First Name*'),
+                                helperText: 'Your name',
+                              ),
+                              validator: (value) => value == null || value.isEmpty ? 'Enter your first name' : null,
+                              onSaved: (value) => _firstName = value!,
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          Expanded(
+                            flex: 5,
+                            child: TextFormField(
+                              decoration: const InputDecoration(
+                                label: Text('Last Name*'),
+                                helperText: 'Your surname',
+                              ),
+                              validator: (value) => value == null || value.isEmpty ? 'Enter your last name' : null,
+                              onSaved: (value) => _lastName = value!,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
                       TextFormField(
                         decoration: const InputDecoration(
                           label: Text('Email*'),
@@ -62,26 +96,27 @@ class _LoginScreen extends State<LoginScreen> {
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
                             _formKey.currentState!.save();
-                            UserCredential? credentials;
                             try {
-                              credentials = await FirebaseAuth.instance
-                                  .signInWithEmailAndPassword(email: _email, password: _password);
+                              var credentials = await FirebaseAuth.instance
+                                  .createUserWithEmailAndPassword(email: _email, password: _password);
+                              await credentials.user!.updateDisplayName("$_firstName $_lastName");
+                              var currentUser = (await FirebaseAuth.instance.currentUser)!;
                               _formKey.currentState!.reset();
                               if (context.mounted) {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => HomeScreen(credentials!.user!),
+                                    builder: (context) => HomeScreen(currentUser),
                                   ),
                                 );
                               }
                             } catch (e) {
-                              print("Cannot login: $e");
+                              print("Cannot register a user: $e");
                             }
                           }
                         },
                         child: Text(
-                          'Sign in',
+                          'Sign up',
                           style: Theme.of(context).textTheme.labelLarge,
                         ),
                       )

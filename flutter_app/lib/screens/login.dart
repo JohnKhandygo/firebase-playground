@@ -1,19 +1,17 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/home.dart';
+import 'package:flutter_app/screens/home.dart';
 
-class RegistrationScreen extends StatefulWidget {
-  const RegistrationScreen({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
   @override
-  State<RegistrationScreen> createState() => _RegistrationState();
+  State<LoginScreen> createState() => _LoginScreen();
 }
 
-class _RegistrationState extends State<RegistrationScreen> {
+class _LoginScreen extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  String _firstName = '';
-  String _lastName = '';
   String _email = '';
   String _password = '';
 
@@ -26,7 +24,7 @@ class _RegistrationState extends State<RegistrationScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Sign up', style: Theme.of(context).textTheme.headlineLarge),
+              Text('Sign in', style: Theme.of(context).textTheme.headlineLarge),
               const SizedBox(
                 height: 20,
               ),
@@ -34,38 +32,6 @@ class _RegistrationState extends State<RegistrationScreen> {
                   key: _formKey,
                   child: Column(
                     children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 5,
-                            child: TextFormField(
-                              decoration: const InputDecoration(
-                                label: Text('First Name*'),
-                                helperText: 'Your name',
-                              ),
-                              validator: (value) => value == null || value.isEmpty ? 'Enter your first name' : null,
-                              onSaved: (value) => _firstName = value!,
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          Expanded(
-                            flex: 5,
-                            child: TextFormField(
-                              decoration: const InputDecoration(
-                                label: Text('Last Name*'),
-                                helperText: 'Your surname',
-                              ),
-                              validator: (value) => value == null || value.isEmpty ? 'Enter your last name' : null,
-                              onSaved: (value) => _lastName = value!,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
                       TextFormField(
                         decoration: const InputDecoration(
                           label: Text('Email*'),
@@ -96,27 +62,26 @@ class _RegistrationState extends State<RegistrationScreen> {
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
                             _formKey.currentState!.save();
+                            UserCredential? credentials;
                             try {
-                              var credentials = await FirebaseAuth.instance
-                                  .createUserWithEmailAndPassword(email: _email, password: _password);
-                              await credentials.user!.updateDisplayName("$_firstName $_lastName");
-                              var currentUser = (await FirebaseAuth.instance.currentUser)!;
+                              credentials = await FirebaseAuth.instance
+                                  .signInWithEmailAndPassword(email: _email, password: _password);
                               _formKey.currentState!.reset();
                               if (context.mounted) {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => HomeScreen(currentUser),
+                                    builder: (context) => HomeScreen(credentials!.user!),
                                   ),
                                 );
                               }
                             } catch (e) {
-                              print("Cannot register a user: $e");
+                              print("Cannot login: $e");
                             }
                           }
                         },
                         child: Text(
-                          'Sign up',
+                          'Sign in',
                           style: Theme.of(context).textTheme.labelLarge,
                         ),
                       )

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_app/home.dart';
-import 'package:flutter_app/login.dart';
-import 'package:flutter_app/registration.dart';
+import 'package:flutter_app/screens/login.dart';
+import 'package:flutter_app/screens/registration.dart';
 import 'firebase_options.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -105,61 +103,3 @@ class LandingScreen extends StatelessWidget {
     );
   }
 }
-
-// class _LandingScreenState extends State<LandingScreen> {
-//   @override
-//   Widget build(BuildContext context) {
-//     // This method is rerun every time setState is called, for instance as done
-//     // by the _incrementCounter method above.
-//     //
-//     // The Flutter framework has been optimized to make rerunning build methods
-//     // fast, so that you can just rebuild anything that needs updating rather
-//     // than having to individually change instances of widgets.
-//     return Scaffold(
-//       body: Padding(
-//         padding: const EdgeInsets.all(8.0),
-//         child: Center(
-//             // Center is a layout widget. It takes a single child and positions it
-//             // in the middle of the parent.
-//             child: StreamBuilder(
-//                 stream: FirebaseAuth.instance.userChanges(),
-//                 builder: (context, snapshot) => Column(
-//                       mainAxisAlignment: MainAxisAlignment.center,
-//                       children: snapshot.data == null ? signUpSequence() : profileSequence(snapshot.data!),
-//                     ))),
-//       ),
-//     );
-//   }
-
-//   List<Widget> signUpSequence() {
-//     return [
-//       Text('Sign up', style: Theme.of(context).textTheme.headlineLarge),
-//       const SizedBox(
-//         height: 20,
-//       ),
-//       const RegistrationForm()
-//     ];
-//   }
-
-//   List<Widget> profileSequence(User user) {
-//     return [
-//       Text('Hello, ${user.displayName}', style: Theme.of(context).textTheme.headlineLarge),
-//       const SizedBox(
-//         height: 20,
-//       ),
-//       FilledButton.tonal(
-//         onPressed: () async {
-//           try {
-//             await FirebaseAuth.instance.signOut();
-//           } catch (e) {
-//             print("Cannot sign out: $e");
-//           }
-//         },
-//         child: Text(
-//           'Sign out',
-//           style: Theme.of(context).textTheme.labelLarge,
-//         ),
-//       ),
-//     ];
-//   }
-// }
