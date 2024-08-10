@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_app/home.dart';
+import 'package:flutter_app/login.dart';
 import 'package:flutter_app/registration.dart';
 import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -88,9 +89,7 @@ class LandingScreen extends StatelessWidget {
                         onPressed: () => Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const Center(
-                                child: Text('Sign in form'),
-                              ),
+                              builder: (context) => LoginScreen(),
                             )),
                         child: Text(
                           'Sign in',
