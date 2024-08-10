@@ -17,6 +17,9 @@ tasks:
       dart pub global activate flutterfire_cli
       export PATH="$PATH":"$HOME/.pub-cache/bin"
       gp sync-done flutter-sdk
+    init: |
+      cd flutter_app
+      dart pub get
   - name: firebase-cli
     before: |
       npm install -g firebase-tools
