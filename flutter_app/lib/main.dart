@@ -75,9 +75,7 @@ class LandingScreen extends StatelessWidget {
                         onPressed: () => Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const Center(
-                                child: Text('Registration form'),
-                              ),
+                              builder: (context) => RegistrationScreen(),
                             )),
                         child: Text(
                           'Sign up',
